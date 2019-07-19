@@ -1,0 +1,32 @@
+resources:
+- name: python3-ci-image
+  type: git
+  check_every: 24h
+  source:
+    uri: https://github.com/jonm/python3-ci-image.git
+    branch: master
+
+- name: hub
+  type: docker-image
+  check_every: 24h
+  source:
+    email: ((docker-hub-email))
+    username: ((docker-hub-username))
+    password: ((docker-hub-password))
+    repository: jonm33/python3-ci
+
+jobs:
+- name: publish
+  public: true
+  serial: true
+  plan:
+    - get: python3-ci-image
+      trigger: true
+    - put: hub
+      params:
+        build: python3-ci-image
+        cache: true
+        cache_tag: latest
+        tag_file: python3-ci-image/VERSION
+        tag_as_latest: true
+      get_params: {skip_download: true}
