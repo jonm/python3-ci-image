@@ -25,8 +25,8 @@ jobs:
     - put: hub
       params:
         build: python3-ci-image
-        cache: true
-        cache_tag: latest
+#        cache: true
+#        cache_tag: latest
         tag_file: python3-ci-image/VERSION
         tag_as_latest: true
       get_params: {skip_download: true}
